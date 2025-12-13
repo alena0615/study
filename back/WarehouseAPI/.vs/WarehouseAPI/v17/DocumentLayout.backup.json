@@ -1,0 +1,105 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D3048AE4-45CC-4E37-B9E5-C7513F972F3C}|WarehouseAPI\\WarehouseAPI.csproj|c:\\users\\int3graxx\\documents\\warehouse-search-app\\back\\warehouseapi\\warehouseapi\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D3048AE4-45CC-4E37-B9E5-C7513F972F3C}|WarehouseAPI\\WarehouseAPI.csproj|solutionrelative:warehouseapi\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D3048AE4-45CC-4E37-B9E5-C7513F972F3C}|WarehouseAPI\\WarehouseAPI.csproj|c:\\users\\int3graxx\\documents\\warehouse-search-app\\back\\warehouseapi\\warehouseapi\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D3048AE4-45CC-4E37-B9E5-C7513F972F3C}|WarehouseAPI\\WarehouseAPI.csproj|solutionrelative:warehouseapi\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D3048AE4-45CC-4E37-B9E5-C7513F972F3C}|WarehouseAPI\\WarehouseAPI.csproj|c:\\users\\int3graxx\\documents\\warehouse-search-app\\back\\warehouseapi\\warehouseapi\\repositories\\iproductrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D3048AE4-45CC-4E37-B9E5-C7513F972F3C}|WarehouseAPI\\WarehouseAPI.csproj|solutionrelative:warehouseapi\\repositories\\iproductrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D3048AE4-45CC-4E37-B9E5-C7513F972F3C}|WarehouseAPI\\WarehouseAPI.csproj|c:\\users\\int3graxx\\documents\\warehouse-search-app\\back\\warehouseapi\\warehouseapi\\repositories\\productrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D3048AE4-45CC-4E37-B9E5-C7513F972F3C}|WarehouseAPI\\WarehouseAPI.csproj|solutionrelative:warehouseapi\\repositories\\productrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D3048AE4-45CC-4E37-B9E5-C7513F972F3C}|WarehouseAPI\\WarehouseAPI.csproj|c:\\users\\int3graxx\\documents\\warehouse-search-app\\back\\warehouseapi\\warehouseapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D3048AE4-45CC-4E37-B9E5-C7513F972F3C}|WarehouseAPI\\WarehouseAPI.csproj|solutionrelative:warehouseapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ProductRepository.cs",
+              "DocumentMoniker": "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\Repositories\\ProductRepository.cs",
+              "RelativeDocumentMoniker": "WarehouseAPI\\Repositories\\ProductRepository.cs",
+              "ToolTip": "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\Repositories\\ProductRepository.cs",
+              "RelativeToolTip": "WarehouseAPI\\Repositories\\ProductRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T21:27:45.394Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IProductRepository.cs",
+              "DocumentMoniker": "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\Repositories\\IProductRepository.cs",
+              "RelativeDocumentMoniker": "WarehouseAPI\\Repositories\\IProductRepository.cs",
+              "ToolTip": "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\Repositories\\IProductRepository.cs",
+              "RelativeToolTip": "WarehouseAPI\\Repositories\\IProductRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T21:27:42.765Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Product.cs",
+              "DocumentMoniker": "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "WarehouseAPI\\Models\\Product.cs",
+              "ToolTip": "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\Models\\Product.cs",
+              "RelativeToolTip": "WarehouseAPI\\Models\\Product.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T21:27:36.697Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ProductController.cs",
+              "DocumentMoniker": "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\Controllers\\ProductController.cs",
+              "RelativeDocumentMoniker": "WarehouseAPI\\Controllers\\ProductController.cs",
+              "ToolTip": "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\Controllers\\ProductController.cs",
+              "RelativeToolTip": "WarehouseAPI\\Controllers\\ProductController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T21:27:28.557Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\Program.cs",
+              "RelativeDocumentMoniker": "WarehouseAPI\\Program.cs",
+              "ToolTip": "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\Program.cs",
+              "RelativeToolTip": "WarehouseAPI\\Program.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-12T21:07:19.776Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

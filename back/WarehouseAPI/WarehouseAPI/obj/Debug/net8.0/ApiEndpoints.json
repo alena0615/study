@@ -1,0 +1,23 @@
+[
+  {
+    "ContainingType": "WarehouseAPI.Controllers.ProductController",
+    "Method": "Search",
+    "RelativePath": "api/Product/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "searchType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "searchValue",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
