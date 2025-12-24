@@ -3164,11 +3164,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Elena\\OneDrive\\Документы\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\WarehouseAPI.csproj",
+      "projectUniqueName": "C:\\Users\\Elena\\OneDrive\\Документы\\GitHub\\study\\back\\WarehouseAPI\\WarehouseAPI\\WarehouseAPI.csproj",
       "projectName": "WarehouseAPI",
-      "projectPath": "C:\\Users\\Elena\\OneDrive\\Документы\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\WarehouseAPI.csproj",
+      "projectPath": "C:\\Users\\Elena\\OneDrive\\Документы\\GitHub\\study\\back\\WarehouseAPI\\WarehouseAPI\\WarehouseAPI.csproj",
       "packagesPath": "C:\\Users\\Elena\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Elena\\OneDrive\\Документы\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\obj\\",
+      "outputPath": "C:\\Users\\Elena\\OneDrive\\Документы\\GitHub\\study\\back\\WarehouseAPI\\WarehouseAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
