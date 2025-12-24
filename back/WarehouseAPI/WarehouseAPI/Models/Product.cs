@@ -2,6 +2,8 @@
 {
     public class Product
     {
+        public int Id { get; set; }
+
         public string CellLocation { get; set; } = string.Empty;
         public DateTime ReceivedDate { get; set; }
         public DateTime? IssuedDate { get; set; }

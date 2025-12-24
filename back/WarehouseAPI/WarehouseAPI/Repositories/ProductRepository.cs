@@ -1,90 +1,84 @@
-﻿using WarehouseAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using WarehouseAPI.Data;
+using WarehouseAPI.Models;
 
 namespace WarehouseAPI.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly List<Product> _products = new()
+        private readonly ApplicationDbContext _context;
+        private readonly string _connectionString;
+
+        public ProductRepository(ApplicationDbContext context, IConfiguration configuration)
         {
-            new Product
-            {
-                CellLocation = "A-15-03",
-                ReceivedDate = DateTime.Parse("2024-12-01T10:30:00"),
-                IssuedDate = DateTime.Parse("2024-12-05T14:20:00"),
-                ProductName = "Ноутбук Lenovo ThinkPad X1 Carbon",
-                ReceivedByEmployee = "Иванов Иван Иванович",
-                IssuedByEmployee = "Петров Петр Петрович",
-                WeightReceived = 1.2,
-                WeightIssued = 1.2,
-                Barcode = "1234567890123",
-                StorageCell = "A-15-03",
-                ProductBarcode = "LNV-X1C-2024",
-                ArticleNumber = "ART-001"
-            },
-            new Product
-            {
-                CellLocation = "B-22-07",
-                ReceivedDate = DateTime.Parse("2024-12-03T09:15:00"),
-                IssuedDate = null,
-                ProductName = "Монитор Samsung 27 4K",
-                ReceivedByEmployee = "Сидорова Мария Александровна",
-                IssuedByEmployee = null,
-                WeightReceived = 5.8,
-                WeightIssued = null,
-                Barcode = "9876543210987",
-                StorageCell = "B-22-07",
-                ProductBarcode = "SMS-27-4K",
-                ArticleNumber = "ART-002"
-            },
-            new Product
-            {
-                CellLocation = "C-10-12",
-                ReceivedDate = DateTime.Parse("2024-11-28T11:45:00"),
-                IssuedDate = DateTime.Parse("2024-12-02T16:30:00"),
-                ProductName = "Клавиатура механическая Keychron K8",
-                ReceivedByEmployee = "Козлов Алексей Дмитриевич",
-                IssuedByEmployee = "Морозова Ольга Викторовна",
-                WeightReceived = 0.9,
-                WeightIssued = 0.9,
-                Barcode = "5555666677778",
-                StorageCell = "C-10-12",
-                ProductBarcode = "KEY-K8-PRO",
-                ArticleNumber = "ART-003"
-            },
-            new Product
-            {
-                CellLocation = "D-05-20",
-                ReceivedDate = DateTime.Parse("2024-12-07T08:00:00"),
-                IssuedDate = null,
-                ProductName = "Мышь Logitech MX Master 3",
-                ReceivedByEmployee = "Новиков Сергей Павлович",
-                IssuedByEmployee = null,
-                WeightReceived = 0.14,
-                WeightIssued = null,
-                Barcode = "1111222233334",
-                StorageCell = "D-05-20",
-                ProductBarcode = "LOG-MX3",
-                ArticleNumber = "ART-004"
-            }
-        };
+            _context = context;
+            _connectionString = configuration.GetConnectionString("DefaultConnection")!;
+        }
 
         public Product? Search(string searchType, string searchValue)
         {
             if (string.IsNullOrWhiteSpace(searchValue)) return null;
-
             var val = searchValue.ToLower().Trim();
+            var query = _context.Products.AsQueryable();
 
-            return _products.FirstOrDefault(p =>
+            switch (searchType)
             {
-                return searchType switch
-                {
-                    "barcode" => p.Barcode?.ToLower() == val,
-                    "storageCell" => p.StorageCell?.ToLower() == val,
-                    "productBarcode" => p.ProductBarcode?.ToLower() == val,
-                    "article" => p.ArticleNumber?.ToLower() == val,
-                    _ => false
-                };
-            });
+                case "barcode":
+                    return query.FirstOrDefault(p => p.Barcode != null && p.Barcode.ToLower() == val);
+                case "storageCell":
+                    return query.FirstOrDefault(p => p.CellLocation.ToLower() == val || (p.StorageCell != null && p.StorageCell.ToLower() == val));
+                case "productBarcode":
+                    return query.FirstOrDefault(p => p.ProductBarcode != null && p.ProductBarcode.ToLower() == val);
+                case "article":
+                    return query.FirstOrDefault(p => p.ArticleNumber != null && p.ArticleNumber.ToLower() == val);
+                default:
+                    return null;
+            }
+        }
+
+        public void Add(Product p)
+        {
+            using var connection = new NpgsqlConnection(_connectionString);
+            connection.Open();
+
+            var sql = @"
+                INSERT INTO ""Products"" 
+                (
+                    ""ProductName"", 
+                    ""CellLocation"", 
+                    ""WeightReceived"", 
+                    ""ReceivedDate"", 
+                    ""ReceivedByEmployee"",
+                    ""Barcode"", 
+                    ""ArticleNumber"", 
+                    ""ProductBarcode""
+                ) 
+                VALUES 
+                (
+                    @Name, 
+                    @Cell, 
+                    @Weight, 
+                    @Date, 
+                    @Emp, 
+                    @Bar, 
+                    @Art, 
+                    @ProdBar
+                )";
+
+            using var command = new NpgsqlCommand(sql, connection);
+
+            command.Parameters.AddWithValue("@Name", p.ProductName);
+            command.Parameters.AddWithValue("@Cell", p.CellLocation);
+            command.Parameters.AddWithValue("@Weight", p.WeightReceived);
+            command.Parameters.AddWithValue("@Date", DateTime.Now);
+            command.Parameters.AddWithValue("@Emp", "Администратор");
+
+            command.Parameters.AddWithValue("@Bar", p.Barcode ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Art", p.ArticleNumber ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@ProdBar", p.ProductBarcode ?? (object)DBNull.Value);
+
+            command.ExecuteNonQuery();
         }
     }
 }

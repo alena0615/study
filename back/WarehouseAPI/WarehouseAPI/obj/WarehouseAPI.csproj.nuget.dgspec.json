@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\WarehouseAPI.csproj": {}
+    "C:\\Users\\Elena\\OneDrive\\Документы\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\WarehouseAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\WarehouseAPI.csproj": {
+    "C:\\Users\\Elena\\OneDrive\\Документы\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\WarehouseAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\WarehouseAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Elena\\OneDrive\\Документы\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\WarehouseAPI.csproj",
         "projectName": "WarehouseAPI",
-        "projectPath": "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\WarehouseAPI.csproj",
-        "packagesPath": "C:\\Users\\int3graxx\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\int3graxx\\Documents\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\obj\\",
+        "projectPath": "C:\\Users\\Elena\\OneDrive\\Документы\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\WarehouseAPI.csproj",
+        "packagesPath": "C:\\Users\\Elena\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Elena\\OneDrive\\Документы\\warehouse-search-app\\back\\WarehouseAPI\\WarehouseAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\int3graxx\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Elena\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -51,9 +50,27 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.11, )"
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.6.2, )"
+              "version": "[9.0.6, )"
             }
           },
           "imports": [

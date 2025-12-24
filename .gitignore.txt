@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.angular/
+*.log
+npm-debug.log*
+.vscode/
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userprefs
+*.lock.json
+Thumbs.db
+.DS_Store

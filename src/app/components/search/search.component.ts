@@ -2,15 +2,52 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
+import { AuthService } from '../../services/auth.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-search',
   standalone: true,
   imports: [FormsModule, CommonModule],
   template: `
-    <div class="search-container">
-      <h1>Поиск товаров на складе</h1>
+    <div class="search-card">
+      <h1>📦 Поиск товаров</h1>
       
+      <div *ngIf="authService.currentUser?.role === 'admin'" class="admin-panel">
+        <div class="admin-header">
+          <span>🛡️ Добавление нового товара</span>
+        </div>
+        
+        <div class="admin-form">
+          <div class="form-row">
+            <input [(ngModel)]="newProduct.productName" placeholder="Наименование товара" class="form-control admin-input">
+            <input [(ngModel)]="newProduct.cellLocation" placeholder="Ячейка (например A-01)" class="form-control admin-input">
+          </div>
+
+          <div class="form-row">
+            <input [(ngModel)]="newProduct.weightReceived" type="number" placeholder="Вес (кг)" class="form-control admin-input">
+          </div>
+
+          <div class="form-row id-selector">
+            <select [(ngModel)]="selectedIdType" class="form-control admin-select">
+              <option value="barcode">Штрихкод</option>
+              <option value="article">Артикул</option>
+              <option value="productBarcode">Баркод товара</option>
+            </select>
+            
+            <input [(ngModel)]="selectedIdValue" placeholder="Введите значение..." class="form-control admin-input">
+          </div>
+
+          <button (click)="addProduct()" class="btn-add" [disabled]="!isFormValid()">
+            💾 Сохранить в базу
+          </button>
+          
+          <span *ngIf="addMessage" class="status-msg" [class.error]="addMessage.includes('Ошибка')">
+            {{ addMessage }}
+          </span>
+        </div>
+      </div>
+
       <div class="search-form">
         <div class="form-group">
           <label>Параметр поиска:</label>
@@ -23,135 +60,154 @@ import { ProductService } from '../../services/product.service';
         </div>
 
         <div class="form-group">
-          <label>Значение для поиска:</label>
+          <label>Значение:</label>
           <input 
             type="text" 
             [(ngModel)]="searchValue" 
-            class="form-control"
+            class="form-control" 
+            placeholder="Например: 1234567890123"
             (keyup.enter)="onSearch()">
         </div>
 
         <button class="btn-search" (click)="onSearch()" [disabled]="isLoading">
-          {{ isLoading ? 'Поиск...' : 'Найти' }}
+          {{ isLoading ? '⏳ Ищем...' : '🔍 Найти' }}
         </button>
       </div>
 
-      <div *ngIf="isLoading" class="loading">
-        <div class="spinner"></div>
-        <p>Ищем товар...</p>
+      <div *ngIf="searchResult" class="result-card">
+        <h3>✅ Товар найден</h3>
+        <div class="info-row"><span class="label">Название:</span> <span class="value">{{ searchResult.productName }}</span></div>
+        <div class="info-row"><span class="label">Ячейка:</span> <span class="value highlight">{{ searchResult.cellLocation }}</span></div>
+        <div class="info-row"><span class="label">Вес:</span> <span class="value">{{ searchResult.weightReceived }} кг</span></div>
+        <div class="info-row"><span class="label">Принял:</span> <span class="value">{{ searchResult.receivedByEmployee }}</span></div>
+        <div class="info-row"><span class="label">Дата:</span> <span class="value">{{ searchResult.receivedDate | date:'dd.MM.yyyy' }}</span></div>
+        
+        <hr>
+        <div class="info-row" *ngIf="searchResult.barcode"><span class="label">Штрихкод:</span> <span class="value">{{ searchResult.barcode }}</span></div>
+        <div class="info-row" *ngIf="searchResult.articleNumber"><span class="label">Артикул:</span> <span class="value">{{ searchResult.articleNumber }}</span></div>
+        <div class="info-row" *ngIf="searchResult.productBarcode"><span class="label">Баркод:</span> <span class="value">{{ searchResult.productBarcode }}</span></div>
       </div>
 
       <div *ngIf="notFound" class="not-found">
-        <p>❌ Товар не найден</p>
-      </div>
-
-      <div *ngIf="searchResult" class="result-card">
-        <h2>Информация о товаре</h2>
-        
-        <div class="result-grid">
-          <div class="result-item">
-            <span class="label">Наименование:</span>
-            <span class="value">{{ searchResult.productName }}</span>
-          </div>
-
-          <div class="result-item">
-            <span class="label">Ячейка:</span>
-            <span class="value highlight">{{ searchResult.cellLocation }}</span>
-          </div>
-
-          <div class="result-item">
-            <span class="label">Принял:</span>
-            <span class="value">{{ searchResult.receivedByEmployee }}</span>
-          </div>
-
-          <div class="result-item">
-            <span class="label">Дата приёмки:</span>
-            <span class="value">{{ searchResult.receivedDate | date:'dd.MM.yyyy HH:mm' }}</span>
-          </div>
-
-          <div class="result-item">
-            <span class="label">Выдал:</span>
-            <span class="value">{{ searchResult.issuedByEmployee || 'Не выдан' }}</span>
-          </div>
-
-          <div class="result-item">
-            <span class="label">Дата выдачи:</span>
-            <span class="value">
-              {{ searchResult.issuedDate ? (searchResult.issuedDate | date:'dd.MM.yyyy HH:mm') : '-' }}
-            </span>
-          </div>
-          
-           <div class="result-item">
-            <span class="label">Вес (приемка):</span>
-            <span class="value">{{ searchResult.weightReceived }} кг</span>
-          </div>
-        </div>
+        ❌ Товар не найден. Проверьте данные.
       </div>
     </div>
   `,
   styles: [`
-    .search-container { max-width: 800px; margin: 0 auto; padding: 20px; font-family: sans-serif; }
-    .search-form { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
-    .form-group { margin-bottom: 20px; }
-    .form-control { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; font-size: 16px; }
-    .btn-search { width: 100%; padding: 12px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
-    .btn-search:disabled { background: #ccc; }
-    .result-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .result-grid { display: grid; gap: 10px; }
-    .result-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
-    .label { font-weight: bold; color: #555; }
-    .value { font-weight: 500; text-align: right; }
-    .value.highlight { color: #3498db; font-size: 1.2em; font-weight: bold; }
-    .loading { text-align: center; padding: 20px; background: white; border-radius: 8px; margin-bottom: 20px; }
-    .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 10px; }
-    .not-found { padding: 20px; background: #fff5f5; color: #c0392b; text-align: center; border-radius: 8px; border: 1px solid #e74c3c; margin-bottom: 20px; font-weight: bold; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .search-card {
+      background: white; max-width: 600px; margin: 40px auto; padding: 30px;
+      border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); font-family: sans-serif;
+    }
+    h1 { text-align: center; color: #2c3e50; font-size: 24px; }
+
+    .admin-panel { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 15px; margin-bottom: 25px; }
+    .admin-header { font-weight: bold; color: #0369a1; margin-bottom: 15px; border-bottom: 1px solid #bae6fd; padding-bottom: 5px; }
+    
+    .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+    .admin-input { font-size: 14px; padding: 8px; }
+    .admin-select { font-size: 14px; padding: 8px; width: 40%; }
+
+    .btn-add {
+      background: #0ea5e9; color: white; border: none; padding: 10px 20px;
+      border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%;
+    }
+    .btn-add:disabled { background: #cbd5e1; cursor: not-allowed; }
+    
+    .status-msg { display: block; text-align: center; margin-top: 10px; color: #16a34a; font-weight: bold;}
+    .status-msg.error { color: #dc2626; }
+
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: 600; color: #64748b; }
+    .form-control { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; box-sizing: border-box; }
+    .btn-search { width: 100%; padding: 14px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    
+    .result-card { margin-top: 25px; padding: 20px; background: #f8fafc; border-radius: 8px; border-left: 5px solid #22c55e; }
+    .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
+    .value.highlight { color: #6366f1; font-weight: bold; font-size: 1.1em; }
+    .not-found { margin-top: 20px; padding: 15px; background: #fef2f2; color: #dc2626; border-radius: 8px; text-align: center; border: 1px solid #fecaca; }
   `]
 })
 export class SearchComponent {
   searchType: string = 'barcode';
   searchValue: string = '';
   searchResult: any = null;
-  isLoading: boolean = false;
   notFound: boolean = false;
+  isLoading: boolean = false;
+  addMessage: string = '';
+
+  newProduct = {
+    productName: '',
+    cellLocation: '',
+    weightReceived: null
+  };
+  selectedIdType: string = 'barcode'; 
+  selectedIdValue: string = '';
 
   constructor(
     private productService: ProductService,
-    private cdr: ChangeDetectorRef 
+    private cdr: ChangeDetectorRef,
+    public authService: AuthService,
+    private http: HttpClient
   ) {}
 
   onSearch(): void {
     if (!this.searchValue.trim()) return;
-
     this.isLoading = true;
     this.notFound = false;
     this.searchResult = null;
 
-    this.productService.searchProduct({
-      searchType: this.searchType,
-      searchValue: this.searchValue
-    }).subscribe({
-      next: (data) => {
-        console.log('Данные получены:', data);
-        this.isLoading = false;
-
-        if (data) {
-          this.searchResult = data;
-          this.notFound = false;
-        } else {
-          this.searchResult = null;
-          this.notFound = true;
+    this.productService.searchProduct({ searchType: this.searchType, searchValue: this.searchValue })
+      .subscribe({
+        next: (data) => {
+          this.isLoading = false;
+          this.searchResult = data || null;
+          this.notFound = !data;
+          this.cdr.detectChanges();
+        },
+        error: () => { 
+          this.isLoading = false;
+          this.notFound = true; 
+          this.cdr.detectChanges(); 
         }
+      });
+  }
 
-        this.cdr.detectChanges();
-      },
-      error: (error) => {
-        console.error('Ошибка:', error);
-        this.isLoading = false;
-        this.notFound = true;
+  isFormValid(): boolean {
+    return !!(this.newProduct.productName && this.newProduct.cellLocation && this.newProduct.weightReceived && this.selectedIdValue);
+  }
 
-        this.cdr.detectChanges();
-      }
+  addProduct() {
+    this.addMessage = '⏳ Сохранение...';
+
+    const productToSend: any = {
+      productName: this.newProduct.productName,
+      cellLocation: this.newProduct.cellLocation,
+      weightReceived: this.newProduct.weightReceived
+    };
+
+    if (this.selectedIdType === 'barcode') productToSend.barcode = this.selectedIdValue;
+    if (this.selectedIdType === 'article') productToSend.articleNumber = this.selectedIdValue;
+    if (this.selectedIdType === 'productBarcode') productToSend.productBarcode = this.selectedIdValue;
+
+    const headers = new HttpHeaders({
+      'Authorization': 'Basic ' + this.authService.currentUser?.token
     });
+
+    this.http.post('https://localhost:7142/api/product/add', productToSend, { headers })
+      .subscribe({
+        next: () => { 
+          this.addMessage = `✅ Товар "${productToSend.productName}" добавлен!`; 
+          
+          this.newProduct = { productName: '', cellLocation: '', weightReceived: null };
+          this.selectedIdValue = '';
+          
+          this.cdr.detectChanges();
+        },
+        error: (err) => { 
+          console.error(err);
+          this.addMessage = '❌ Ошибка при добавлении!'; 
+          this.cdr.detectChanges();
+        }
+      });
   }
 }
